@@ -30,7 +30,7 @@ for d in /sys/kernel/iommu_groups/*/devices/*; do
     lspci -nns "${d##*/}"
 done
 ```
-<small>Thanks, [ArchWiki](https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)!</small>
+Thanks, [ArchWiki](https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Ensuring_that_the_groups_are_valid)!
 
 Make sure that the devices you marked for passthrough are in a group with no un-passed devices (excluding bridges and root ports)!
 
@@ -43,3 +43,7 @@ Author
 ------
 
 Stephen Panicho (s.panicho@gmail.com)
+
+With help from:
+[Alex Williamson's VFIO blog](https://vfio.blogspot.com/)
+[The ArchWiki](https://wiki.archlinux.org)
