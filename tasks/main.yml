@@ -7,7 +7,7 @@
 # I know this looks dumb, but it saves on writing a bunch of conditionals
 # Returns the correct path /boot/efi/EFI/{redhat,centos,fedora}/grub.cfg
 - name: Check for GRUB config in EFI partition
-  shell: 'find /boot/efi/EFI -name grubb.cfg'
+  shell: 'find /boot/efi/EFI -name grub.cfg'
   register: grub_cfg_path
   changed_when: false
 
