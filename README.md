@@ -45,5 +45,7 @@ Author
 Stephen Panicho (s.panicho@gmail.com)
 
 With help from:
+
 [Alex Williamson's VFIO blog](https://vfio.blogspot.com/)
+
 [The ArchWiki](https://wiki.archlinux.org)
