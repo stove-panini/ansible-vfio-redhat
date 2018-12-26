@@ -3,6 +3,6 @@
 # Find these using `lspci -nn`
 # 
 # Below are example IDs for an NVIDIA GeForce GTX 970
-ids: 
+vfio_pci_ids: 
   - 10de:13c2
   - 10de:0fbb

@@ -13,7 +13,7 @@ You will need a CPU which supports IOMMU (the generic name for Intel VT-d and AM
 Role Variables
 --------------
 
-You can specify a list of vendor-ID:device-ID sets using the **ids** variable.
+You can specify a list of vendor-ID:device-ID sets using the **vfio\_pci\_ids** variable.
 
 Here's `defaults/main.yml` as an example:
 ```yaml
@@ -22,7 +22,7 @@ Here's `defaults/main.yml` as an example:
 # Find these using `lspci -nn`
 # 
 # Below are example IDs for an NVIDIA GeForce GTX 970
-ids: 
+vfio_pci_ids: 
   - 10de:13c2
   - 10de:0fbb
 ```

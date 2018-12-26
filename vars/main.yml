@@ -1,6 +1,6 @@
 ---
 # Called in templates/vfio-modprobe.conf.j2
-ids_to_pass: '{{ ids|join(",") }}'
+ids_to_pass: '{{ vfio_pci_ids|join(",") }}'
 
 # Determines the *_iommu kernel parameter. We can error if null.
 # Note: Jinja translates nulls into empty strings...
