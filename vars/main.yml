@@ -2,13 +2,7 @@
 # Called in templates/vfio-modprobe.conf.j2
 ids_to_pass: '{{ vfio_pci_ids|join(",") }}'
 
-# Determines the *_iommu kernel parameter. We can error if null.
-# Note: Jinja translates nulls into empty strings...
-cpu_vendor: >-
-  {%- if 'AuthenticAMD' in ansible_processor -%}
-    amd
-  {%- elif 'GenuineIntel' in ansible_processor -%}
-    intel
-  {%- endif -%}
-
+# ansible_processor is a list (!) set up like:
+# [ core number, vendor, model, core number, vendor, model, ... ]
+cpu_vendor: "{{ ansible_facts['processor'][1] | lower | regex_replace('(authentic)|(genuine)', '') }}"
 iommu_kernel_cmds: '{{ cpu_vendor }}_iommu=on iommu=pt rd.driver.pre=vfio-pci'
