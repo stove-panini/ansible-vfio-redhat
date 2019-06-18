@@ -13,18 +13,18 @@ You will need a CPU which supports IOMMU (the generic name for Intel VT-d and AM
 Role Variables
 --------------
 
-You can specify a list of vendor-ID:device-ID sets using the **vfio\_pci\_ids** variable.
+You can specify a list of vendor-ID:device-ID sets using the **vfio\_pci\_ids** variable. Find these using `lspci -nn`
 
-Here's `defaults/main.yml` as an example:
+Below are example IDs for an NVIDIA GeForce GTX 970
 ```yaml
----
-# List vendor-ID:device-ID sets to pass through
-# Find these using `lspci -nn`
-# 
-# Below are example IDs for an NVIDIA GeForce GTX 970
 vfio_pci_ids: 
   - 10de:13c2
   - 10de:0fbb
+```
+
+The **auto\_reboot** variable will automatically reboot your system when new devices are added if set to _yes_ or _true_. The default is _no_/_false_.
+```yaml
+auto_reboot: no
 ```
 
 Special Considerations
