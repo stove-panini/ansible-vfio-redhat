@@ -1,15 +1,31 @@
 ---
 - name: Check successful CPU detection
   debug:
-    msg: '{{ "Unable to detect CPU type!" if cpu_vendor == "" else "CPU detected as " + cpu_vendor }}'
-  failed_when: cpu_vendor == ""
+    msg: CPU detected as {{ cpu_vendor }}
+  failed_when:
+    - cpu_vendor != 'amd'
+    - cpu_vendor != 'intel'
 
-# I know this looks dumb, but it saves on writing a bunch of conditionals
-# Returns the correct path /boot/efi/EFI/{redhat,centos,fedora}/grub.cfg
-- name: Check for GRUB config in EFI partition
-  shell: 'find /boot/efi/EFI -name grub.cfg'
-  register: grub_cfg_path
-  changed_when: false
+- name: Copy config to /etc/modules-load.d/
+  copy:
+    src: vfio-modules-load.conf
+    dest: /etc/modules-load.d/vfio.conf
+  notify:
+    - rebuild initrd
+
+- name: Copy config to /etc/modprobe.d/
+  template:
+    src: vfio-modprobe.conf.j2
+    dest: /etc/modprobe.d/vfio.conf
+  notify:
+    - rebuild initrd
+
+- name: Copy config to /etc/dracut.conf.d/
+  template:
+    src: vfio-dracut.conf.j2
+    dest: /etc/dracut.conf.d/vfio.conf
+  notify:
+    - rebuild initrd
 
 - name: Check GRUB defaults and enable IOMMU if necessary
   lineinfile:
@@ -17,28 +33,7 @@
     backrefs: true
     regexp: '^(GRUB_CMDLINE_LINUX=(?!.*{{ iommu_kernel_cmds }})\"[^\"]+)(\")'
     line: '\1 {{ iommu_kernel_cmds }}\2'
-
-- name: Generate new GRUB config
-  command: grub2-mkconfig -o {{ grub_cfg_path }}
-
-- name: Copy config to /etc/modules-load.d/
-  copy:
-    src: vfio-modules-load.conf
-    dest: /etc/modules-load.d/vfio.conf
-
-- name: Copy config to /etc/modprobe.d/
-  template:
-    src: vfio-modprobe.conf.j2
-    dest: /etc/modprobe.d/vfio.conf
-
-- name: Copy config to /etc/dracut.conf.d/
-  template:
-    src: vfio-dracut.conf.j2
-    dest: /etc/dracut.conf.d/vfio.conf
-
-- name: Rebuild initrd
-  command: dracut -f
-
-- name: Please reboot!
-  debug:
-    msg: 'The system needs to rebooted in order for the changes to take effect.'
+  notify:
+    - generate grub config
+    - rebuild initrd
+    - reboot
