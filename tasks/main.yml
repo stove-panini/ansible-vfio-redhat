@@ -19,6 +19,7 @@
     dest: /etc/modprobe.d/vfio.conf
   notify:
     - rebuild initrd
+    - reboot
 
 - name: Copy config to /etc/dracut.conf.d/
   template:
@@ -36,4 +37,3 @@
   notify:
     - generate grub config
     - rebuild initrd
-    - reboot
