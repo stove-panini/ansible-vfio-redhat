@@ -8,14 +8,14 @@
 
 - name: Copy config to /etc/modules-load.d/
   copy:
-    src: vfio-modules-load.conf
+    src: etc/modules-load.d/vfio.conf
     dest: /etc/modules-load.d/vfio.conf
   notify:
     - rebuild initrd
 
 - name: Copy config to /etc/modprobe.d/
   template:
-    src: vfio-modprobe.conf.j2
+    src: etc/modprobe.d/vfio.conf.j2
     dest: /etc/modprobe.d/vfio.conf
   notify:
     - rebuild initrd
@@ -23,7 +23,7 @@
 
 - name: Copy config to /etc/dracut.conf.d/
   template:
-    src: vfio-dracut.conf.j2
+    src: etc/dracut.conf.d/vfio.conf.j2
     dest: /etc/dracut.conf.d/vfio.conf
   notify:
     - rebuild initrd
